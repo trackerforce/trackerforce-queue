@@ -3,12 +3,8 @@ name: Queue Service Workflow
 on:
   push:
     branches: [master]
-    paths:
-      - 'trackerforce-queue/**'
   pull_request:
     branches: [master]
-    paths:
-      - 'trackerforce-queue/**'
 
 jobs:
   build:
