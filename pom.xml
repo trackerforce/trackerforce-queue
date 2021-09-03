@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.trackerforce</groupId>
+	<artifactId>trackerforce-queue</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>trackerforce-queue</name>
+	<description>Trackerforce Queue - Queue Module Service</description>
+	
+	<developers>
+		<developer>
+			<name>Roger Floriano</name>
+			<email>trackerforce.project@gmail.com</email>
+			<organization>Trackerforce</organization>
+			<organizationUrl>https://www.linkedin.com/company/trackerforce</organizationUrl>
+		</developer>
+ 	</developers>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.4</version>
+		<relativePath/>
+	</parent>
+	
+	<properties>
+		<jsonwebtoken.version>0.11.2</jsonwebtoken.version>
+		<switcherclient.version>1.2.1</switcherclient.version>
+	
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>11</java.version>
+	</properties>
+	
+	<profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <activatedProperties>prod</activatedProperties>
+            </properties>
+        </profile>
+    </profiles>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.github.switcherapi</groupId>
+			<artifactId>switcher-client</artifactId>
+			<version>${switcherclient.version}</version>
+		</dependency>
+		
+		<!-- JWT -->
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-api</artifactId>
+		    <version>${jsonwebtoken.version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-impl</artifactId>
+		    <version>${jsonwebtoken.version}</version>
+		    <scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>io.jsonwebtoken</groupId>
+		    <artifactId>jjwt-jackson</artifactId>
+		    <version>${jsonwebtoken.version}</version>
+		    <scope>runtime</scope>
+   		    <exclusions>
+		      <exclusion>
+		         <groupId>com.fasterxml.jackson.core</groupId>
+		         <artifactId>jackson-databind</artifactId>
+		      </exclusion>
+		   </exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

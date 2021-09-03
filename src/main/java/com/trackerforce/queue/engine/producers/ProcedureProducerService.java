@@ -1,0 +1,37 @@
+package com.trackerforce.queue.engine.producers;
+
+import static com.github.switcherapi.client.SwitcherContext.getSwitcher;
+import static com.trackerforce.queue.config.Features.ASYNC_QUEUE;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+import com.trackerforce.queue.model.ProcedureRequest;
+import com.trackerforce.queue.service.ProcedureService;
+
+@Service
+public class ProcedureProducerService {
+
+	private static final Logger logger = LoggerFactory.getLogger(ProcedureProducerService.class);
+
+	private static final String TOPIC = "procedure_submissions";
+
+	@Autowired
+	private KafkaTemplate<String, ProcedureRequest> kafkaUserTemplate;
+
+	@Autowired
+	private ProcedureService procedureService;
+
+	public void submitProcedure(ProcedureRequest procedureRequest) {
+		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
+			logger.info(String.format("#### -> Producing message -> %s", procedureRequest));
+			this.kafkaUserTemplate.send(TOPIC, procedureRequest);
+		} else {
+			logger.info(String.format("#### -> Sync callback -> %s", procedureRequest));
+			procedureService.submitProcedure(procedureRequest);
+		}
+	}
+}
