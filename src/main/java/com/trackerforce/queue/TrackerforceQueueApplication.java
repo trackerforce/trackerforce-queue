@@ -16,6 +16,5 @@ public class TrackerforceQueueApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Features.checkSwitchers();
-		Features.watchSnapshot();
 	}
 }
