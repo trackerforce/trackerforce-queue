@@ -28,7 +28,7 @@ public class ManagementService {
 	private String serviceUrl;
 
 	public ProcedureResponse findProcedure(String tenantId, String procedureId) {
-		var token = jwtTokenService.generateToken("trackerforce-queue", "client");
+		var token = jwtTokenService.generateToken("trackerforce-queue", tenantId);
 
 		var headers = new HttpHeaders();
 		headers.add(AUTHORIZATION, BEARER + token);

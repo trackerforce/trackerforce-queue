@@ -7,15 +7,21 @@ import com.trackerforce.queue.model.ProcedureRequest;
 
 @Service
 public class ProcedureService {
-	
+
 	@Autowired
 	private ManagementService managementService;
-	
+
+	@Autowired
+	private HookService hookService;
+
 	public void submitProcedure(ProcedureRequest procedureRequest) {
 		var procedureResponse = managementService.findProcedure(procedureRequest.getTenantId(),
 				procedureRequest.getId());
-		
-		procedureRequest.setHook(procedureResponse.getHook());
+
+		if (procedureResponse.getHook() != null) {
+			procedureRequest.setHook(procedureResponse.getHook());
+			hookService.executeHook(procedureRequest);
+		}
 	}
 
 }
