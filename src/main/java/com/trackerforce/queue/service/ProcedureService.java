@@ -24,4 +24,14 @@ public class ProcedureService {
 		}
 	}
 
+	public void nextProcedure(ProcedureRequest procedureRequest) {
+		var procedureResponse = managementService.findProcedure(procedureRequest.getTenantId(),
+				procedureRequest.getId());
+
+		var mlService = managementService.findMLServiceUrl(procedureRequest.getTenantId());
+		var serviceUrl = mlService.getAttributes().get("url");
+
+		// TODO: Call ML Engine Service
+	}
+
 }

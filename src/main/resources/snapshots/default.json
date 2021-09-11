@@ -12,7 +12,7 @@
             {
               "key": "ASYNC_QUEUE",
               "description": "Uses asynchronous calls to the streaming agent.",
-              "activated": true,
+              "activated": false,
               "components": [
                 "queue-service"
               ]

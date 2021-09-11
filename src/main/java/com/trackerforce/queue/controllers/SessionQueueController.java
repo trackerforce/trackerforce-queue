@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.trackerforce.queue.engine.producers.ProcedureProducerService;
 import com.trackerforce.queue.model.ProcedureRequest;
+import com.trackerforce.queue.type.RequestHeader;
 
 @CrossOrigin(methods = { RequestMethod.POST })
 @RestController
 @RequestMapping(value = "/queue/session")
 public class SessionQueueController {
-	
-	private final String TENANT_HEADER = "X-Tenant";
 
 	private final ProcedureProducerService procedureService;
 
@@ -33,9 +32,21 @@ public class SessionQueueController {
 			@PathVariable(value = "contextId") String contextId,
 			@RequestBody ProcedureRequest procedureRequest) {
 		procedureRequest.setContextId(contextId);
-		procedureRequest.setTenantId(request.getHeader(TENANT_HEADER));
+		procedureRequest.setTenantId(request.getHeader(RequestHeader.TENANT_HEADER.toString()));
 		
 		procedureService.submitProcedure(procedureRequest);
+		return ResponseEntity.ok().body(procedureRequest);
+	}
+	
+	@PostMapping(value = "/v1/procedure/next/{tenantId}/{contextId}")
+	public ResponseEntity<?> enqueueNext(HttpServletRequest request,
+			@PathVariable(value = "tenantId") String tenantId,
+			@PathVariable(value = "contextId") String contextId,
+			@RequestBody ProcedureRequest procedureRequest) {
+		procedureRequest.setContextId(contextId);
+		procedureRequest.setTenantId(request.getHeader(RequestHeader.TENANT_HEADER.toString()));
+		
+		procedureService.nextProcedure(procedureRequest);
 		return ResponseEntity.ok().body(procedureRequest);
 	}
 }

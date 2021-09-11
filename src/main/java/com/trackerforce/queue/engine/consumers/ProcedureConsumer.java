@@ -20,9 +20,15 @@ public class ProcedureConsumer {
 	private ProcedureService procedureService;
 
 	@KafkaListener(topics = "procedure_submissions", groupId = "trackerforce_task_group")
-	public void consumeProcedure(ProcedureRequest procedureRequest) throws IOException {
+	public void consumeProcedureSubmission(ProcedureRequest procedureRequest) throws IOException {
 		logger.info(String.format("#### -> Consumed message -> %s", procedureRequest));
 		procedureService.submitProcedure(procedureRequest);
+	}
+	
+	@KafkaListener(topics = "procedure_next", groupId = "trackerforce_task_group")
+	public void consumeProcedureNext(ProcedureRequest procedureRequest) throws IOException {
+		logger.info(String.format("#### -> Consumed message -> %s", procedureRequest));
+		procedureService.nextProcedure(procedureRequest);
 	}
 
 }

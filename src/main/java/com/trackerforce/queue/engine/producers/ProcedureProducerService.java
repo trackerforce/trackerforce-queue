@@ -17,7 +17,9 @@ public class ProcedureProducerService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProcedureProducerService.class);
 
-	private static final String TOPIC = "procedure_submissions";
+	private static final String TOPIC_SUBMISSION = "procedure_submissions";
+	
+	private static final String TOPIC_NEXT = "procedure_next";
 
 	@Autowired
 	private KafkaTemplate<String, ProcedureRequest> kafkaUserTemplate;
@@ -27,11 +29,21 @@ public class ProcedureProducerService {
 
 	public void submitProcedure(ProcedureRequest procedureRequest) {
 		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
-			logger.info(String.format("#### -> Producing message -> %s", procedureRequest));
-			this.kafkaUserTemplate.send(TOPIC, procedureRequest);
+			logger.info(String.format("#### -> Producing message (submission) -> %s", procedureRequest));
+			this.kafkaUserTemplate.send(TOPIC_SUBMISSION, procedureRequest);
 		} else {
 			logger.info(String.format("#### -> Sync callback -> %s", procedureRequest));
 			procedureService.submitProcedure(procedureRequest);
+		}
+	}
+	
+	public void nextProcedure(ProcedureRequest procedureRequest) {
+		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
+			logger.info(String.format("#### -> Producing message (next) -> %s", procedureRequest));
+			this.kafkaUserTemplate.send(TOPIC_NEXT, procedureRequest);
+		} else {
+			logger.info(String.format("#### -> Sync callback -> %s", procedureRequest));
+			procedureService.nextProcedure(procedureRequest);
 		}
 	}
 }
