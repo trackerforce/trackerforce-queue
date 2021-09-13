@@ -5,9 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.trackerforce.queue.model.ProcedureRequest;
 
@@ -21,14 +19,9 @@ public class HookService {
 
 	public void executeHook(ProcedureRequest procedureRequest) {
 		var headers = new HttpHeaders();
+		var url = procedureRequest.getHook().getResolverUri();
 
-		try {
-			var url = procedureRequest.getHook().getResolverUri();
-			restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(procedureRequest, headers),
-					Object.class);
-		} catch (HttpClientErrorException e) {
-			throw new ResponseStatusException(e.getRawStatusCode(), e.getMessage(), e);
-		}
+		restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(procedureRequest, headers), Object.class);
 	}
 
 }
