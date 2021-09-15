@@ -30,10 +30,10 @@ public class ProcedureService {
 
 	public void nextProcedure(ProcedureRequest procedureRequest) {
 		var mlService = managementService.findMLServiceUrl(procedureRequest.getTenantId());
-		var serviceUrl = mlService.getAttributes().get("url");
+		var serviceUrl = mlService.getValue("url");
 		
-		if (serviceUrl != null && !StringUtils.isBlank(serviceUrl.toString()))
-			mLEngineService.trainProcedure(serviceUrl.toString(), procedureRequest);
+		if (serviceUrl != null && !StringUtils.isBlank(serviceUrl))
+			mLEngineService.trainProcedure(serviceUrl, procedureRequest);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.trackerforce.queue.model;
 
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class GlobalResponse {
 
 	private String key;
@@ -32,6 +34,10 @@ public class GlobalResponse {
 
 	public void setAttributes(Map<String, Object> attributes) {
 		this.attributes = attributes;
+	}
+	
+	public String getValue(String attributeKey) {
+		return attributes.containsKey(attributeKey) ? attributes.get(attributeKey).toString() : StringUtils.EMPTY;
 	}
 
 }
