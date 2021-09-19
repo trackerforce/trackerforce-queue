@@ -2,24 +2,36 @@
   "data": {
     "domain": {
       "name": "Trackerforce",
-      "version": 1630641017311,
-      "activated": true,
+      "version": 1632013079337,
       "group": [
         {
           "name": "Services",
-    	  "activated": true,
           "config": [
             {
               "key": "ASYNC_QUEUE",
-              "description": "Uses asynchronous calls to the streaming agent.",
-              "activated": false,
+              "strategies": [],
               "components": [
                 "queue-service"
-              ]
+              ],
+              "description": "Uses asynchronous calls to the streaming agent.",
+              "activated": false
+            },
+            {
+              "key": "ML_SERVICE",
+              "strategies": [],
+              "components": [
+                "queue-service"
+              ],
+              "description": "Invoke Machine Learning Engine Service",
+              "activated": false
             }
-          ]
+          ],
+          "description": "",
+          "activated": true
         }
-      ]
+      ],
+      "description": "",
+      "activated": true
     }
   }
 }
