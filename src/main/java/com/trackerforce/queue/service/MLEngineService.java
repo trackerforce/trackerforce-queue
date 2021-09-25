@@ -13,8 +13,8 @@ public class MLEngineService {
 
 	private RestTemplate restTemplate = new RestTemplate();
 
-	public void trainProcedure(String serviceUrl, ProcedureRequest procedureRequest) {
-		restTemplate.exchange(String.format("%s%s", serviceUrl, "/train/v1/"), HttpMethod.POST,
+	public void trainProcedure(String serviceUrl, String tenantId, ProcedureRequest procedureRequest) {
+		restTemplate.exchange(String.format("%s%s%s", serviceUrl, "/train/v1/", tenantId), HttpMethod.POST,
 				new HttpEntity<>(procedureRequest, new HttpHeaders()), Object.class);
 	}
 

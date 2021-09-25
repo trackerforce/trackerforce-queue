@@ -39,7 +39,7 @@ public class ProcedureService {
 		var serviceUrl = mlService.getValue("url");
 
 		if (serviceUrl != null && !StringUtils.isBlank(serviceUrl))
-			mLEngineService.trainProcedure(serviceUrl, procedureRequest);
+			mLEngineService.trainProcedure(serviceUrl, procedureRequest.getTenantId(), procedureRequest);
 	}
 
 }
