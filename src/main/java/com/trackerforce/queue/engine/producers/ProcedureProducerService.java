@@ -27,7 +27,7 @@ public class ProcedureProducerService {
 	@Autowired
 	private ProcedureService procedureService;
 
-	public void submitProcedure(ProcedureRequest procedureRequest) {
+	public void submitProcedure(final ProcedureRequest procedureRequest) {
 		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
 			logger.info(String.format("#### -> Producing message (submission) -> %s", procedureRequest));
 			this.kafkaUserTemplate.send(TOPIC_SUBMISSION, procedureRequest);
@@ -37,7 +37,7 @@ public class ProcedureProducerService {
 		}
 	}
 	
-	public void nextProcedure(ProcedureRequest procedureRequest) {
+	public void nextProcedure(final ProcedureRequest procedureRequest) {
 		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
 			logger.info(String.format("#### -> Producing message (next) -> %s", procedureRequest));
 			this.kafkaUserTemplate.send(TOPIC_NEXT, procedureRequest);
