@@ -23,7 +23,7 @@
                 "queue-service"
               ],
               "description": "Invoke Machine Learning Engine Service",
-              "activated": false
+              "activated": true
             }
           ],
           "description": "",
