@@ -1,5 +1,7 @@
 package com.trackerforce.queue.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +13,8 @@ import com.trackerforce.queue.model.ProcedureRequest;
 
 @Service
 public class HookService {
+	
+	private final Logger logger = LoggerFactory.getLogger(HookService.class);
 
 	private RestTemplate restTemplate = new RestTemplate();
 
@@ -21,7 +25,11 @@ public class HookService {
 		var headers = new HttpHeaders();
 		var url = procedureRequest.getHook().getResolverUri();
 
-		restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(procedureRequest, headers), Object.class);
+		try {
+			restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(procedureRequest, headers), Object.class);
+		} catch (Exception e) {
+			logger.error(String.format("Something went wrong [Hook]: %s", procedureRequest));
+		}
 	}
 
 }
