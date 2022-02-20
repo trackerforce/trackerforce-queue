@@ -5,7 +5,6 @@ import static com.trackerforce.queue.config.Features.ASYNC_QUEUE;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +19,21 @@ public class ProcedureProducerService {
 	private static final String TOPIC_SUBMISSION = "procedure_submissions";
 	
 	private static final String TOPIC_NEXT = "procedure_next";
+	
+	private final KafkaTemplate<String, ProcedureRequest> kafkaProcedureTemplate;
 
-	@Autowired
-	private KafkaTemplate<String, ProcedureRequest> kafkaUserTemplate;
-
-	@Autowired
-	private ProcedureService procedureService;
+	private final ProcedureService procedureService;
+	
+	public ProcedureProducerService(KafkaTemplate<String, ProcedureRequest> kafkaProcedureTemplate,
+			ProcedureService procedureService) {
+		this.kafkaProcedureTemplate = kafkaProcedureTemplate;
+		this.procedureService = procedureService;
+	}
 
 	public void submitProcedure(final ProcedureRequest procedureRequest) {
 		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
 			logger.info(String.format("#### -> Producing message (submission) -> %s", procedureRequest));
-			this.kafkaUserTemplate.send(TOPIC_SUBMISSION, procedureRequest);
+			this.kafkaProcedureTemplate.send(TOPIC_SUBMISSION, procedureRequest);
 		} else {
 			logger.info(String.format("#### -> Sync callback -> %s", procedureRequest));
 			procedureService.submitProcedure(procedureRequest);
@@ -40,7 +43,7 @@ public class ProcedureProducerService {
 	public void nextProcedure(final ProcedureRequest procedureRequest) {
 		if (getSwitcher(ASYNC_QUEUE).isItOn()) {
 			logger.info(String.format("#### -> Producing message (next) -> %s", procedureRequest));
-			this.kafkaUserTemplate.send(TOPIC_NEXT, procedureRequest);
+			this.kafkaProcedureTemplate.send(TOPIC_NEXT, procedureRequest);
 		} else {
 			logger.info(String.format("#### -> Sync callback -> %s", procedureRequest));
 			procedureService.nextProcedure(procedureRequest);

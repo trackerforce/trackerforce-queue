@@ -4,22 +4,23 @@ import static com.github.switcherapi.client.SwitcherContext.getSwitcher;
 import static com.trackerforce.queue.config.Features.ML_SERVICE;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trackerforce.queue.model.ProcedureRequest;
 
 @Service
 public class ProcedureService {
-
-	@Autowired
-	private ManagementService managementService;
-
-	@Autowired
-	private HookService hookService;
-
-	@Autowired
-	private MLEngineService mLEngineService;
+	
+	private final ManagementService managementService;
+	private final HookService hookService;
+	private final MLEngineService mLEngineService;
+	
+	public ProcedureService(ManagementService managementService, HookService hookService,
+			MLEngineService mLEngineService) {
+		this.managementService = managementService;
+		this.hookService = hookService;
+		this.mLEngineService = mLEngineService;
+	}
 
 	public void submitProcedure(ProcedureRequest procedureRequest) {
 		var procedureResponse = managementService.findProcedure(procedureRequest.getTenantId(),
