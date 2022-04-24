@@ -2,6 +2,10 @@ server:
   port: 8060
   
 service:
+  package-name: com.trackerforce.queue.controller
+  title: Trackerforce Queue
+  description: Trackerforce Queue - Queue Module Service
+  version: 0.0.1
   management:
     url: http://127.0.0.1:8090
   jwt:

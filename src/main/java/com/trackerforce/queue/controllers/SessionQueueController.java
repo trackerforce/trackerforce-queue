@@ -17,7 +17,7 @@ import com.trackerforce.queue.type.RequestHeader;
 
 @CrossOrigin(methods = { RequestMethod.POST })
 @RestController
-@RequestMapping(value = "/queue/session")
+@RequestMapping(value = "/queue/session/v1")
 public class SessionQueueController {
 
 	private final ProcedureProducerService procedureService;
@@ -26,7 +26,7 @@ public class SessionQueueController {
 		this.procedureService = procedureService;
 	}
 
-	@PostMapping(value = "/v1/procedure/submit/{tenantId}/{contextId}")
+	@PostMapping(value = "/procedure/submit/{tenantId}/{contextId}")
 	public ResponseEntity<?> enqueueSubmission(HttpServletRequest request,
 			@PathVariable(value = "tenantId") String tenantId,
 			@PathVariable(value = "contextId") String contextId,
@@ -38,7 +38,7 @@ public class SessionQueueController {
 		return ResponseEntity.ok().body(procedureRequest);
 	}
 	
-	@PostMapping(value = "/v1/procedure/next/{tenantId}/{contextId}")
+	@PostMapping(value = "/procedure/next/{tenantId}/{contextId}")
 	public ResponseEntity<?> enqueueNext(HttpServletRequest request,
 			@PathVariable(value = "tenantId") String tenantId,
 			@PathVariable(value = "contextId") String contextId,
