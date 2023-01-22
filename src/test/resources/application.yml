@@ -1,13 +1,13 @@
 spring:
   profiles:
-    active: dev
+    active: test
 
 service:
   docs:
     title: Trackerforce Queue
     description: Trackerforce Queue - Queue Module Service
-    version: @project.version@
-    url: ${SERVER_URL:http://localhost:8060}
+    version: 0.0.2-SNAPSHOT
+    url: http://localhost:8060
     license:
       type: MIT
       url: https://github.com/trackerforce/trackerforce-queue/blob/master/LICENSE
