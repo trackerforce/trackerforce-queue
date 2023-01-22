@@ -72,6 +72,12 @@
 			<artifactId>switcher-client</artifactId>
 			<version>${switcherclient.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		
 		<!-- JWT -->
 		<dependency>
