@@ -9,7 +9,7 @@ public enum RequestHeader {
 	
 	private String name;
 	
-	private RequestHeader(String name) {
+	RequestHeader(String name) {
 		this.name = name;
 	}
 	

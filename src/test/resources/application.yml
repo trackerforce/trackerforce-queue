@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: test
+
+service:
+  docs:
+    title: Trackerforce Queue
+    description: Trackerforce Queue - Queue Module Service
+    version: 0.0.2-SNAPSHOT
+    url: http://localhost:8060
+    license:
+      type: MIT
+      url: https://github.com/trackerforce/trackerforce-queue/blob/master/LICENSE
+    contact:
+      author: Roger Floriano (petruki)
+      email: trackerforce.project@gmail.com
