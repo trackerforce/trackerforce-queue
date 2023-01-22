@@ -5,7 +5,7 @@
 	
 	<groupId>com.trackerforce</groupId>
 	<artifactId>trackerforce-queue</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Trackerforce Queue</name>
 	<description>Trackerforce Queue - Queue Module Service</description>
@@ -27,13 +27,15 @@
 	</parent>
 	
 	<properties>
-		<jsonwebtoken.version>0.11.2</jsonwebtoken.version>
-		<swagger2.version>3.0.0</swagger2.version>
-		<switcherclient.version>1.3.4</switcherclient.version>
-	
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>11</java.version>
+		<maven.compiler.source>${java.version}</maven.compiler.source>
+		<maven.compiler.target>${java.version}</maven.compiler.target>
+
+		<jsonwebtoken.version>0.11.2</jsonwebtoken.version>
+		<swagger2.version>3.0.0</swagger2.version>
+		<switcherclient.version>1.3.8</switcherclient.version>
 	</properties>
 	
 	<profiles>
@@ -103,18 +105,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- Swagger-->
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-boot-starter</artifactId>
-		    <version>${swagger2.version}</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>${swagger2.version}</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger-ui</artifactId>
-		    <version>${swagger2.version}</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger2.version}</version>
 		</dependency>
 	</dependencies>
 	
