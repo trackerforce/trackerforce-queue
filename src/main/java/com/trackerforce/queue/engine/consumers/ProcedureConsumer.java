@@ -1,33 +1,32 @@
 package com.trackerforce.queue.engine.consumers;
 
-import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Service;
-
 import com.trackerforce.queue.model.ProcedureRequest;
 import com.trackerforce.queue.service.ProcedureService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProcedureConsumer {
 
 	private final Logger logger = LoggerFactory.getLogger(ProcedureConsumer.class);
-	
-	@Autowired
-	private ProcedureService procedureService;
+
+	private final ProcedureService procedureService;
+
+	public ProcedureConsumer(ProcedureService procedureService) {
+		this.procedureService = procedureService;
+	}
 
 	@KafkaListener(topics = "procedure_submissions", groupId = "trackerforce_task_group")
-	public void consumeProcedureSubmission(ProcedureRequest procedureRequest) throws IOException {
-		logger.info(String.format("#### -> Consumed message -> %s", procedureRequest));
+	public void consumeProcedureSubmission(ProcedureRequest procedureRequest) {
+		logger.atInfo().log(() -> "#### -> Consumed message -> %s".formatted(procedureRequest));
 		procedureService.submitProcedure(procedureRequest);
 	}
 	
 	@KafkaListener(topics = "procedure_next", groupId = "trackerforce_task_group")
-	public void consumeProcedureNext(ProcedureRequest procedureRequest) throws IOException {
-		logger.info(String.format("#### -> Consumed message -> %s", procedureRequest));
+	public void consumeProcedureNext(ProcedureRequest procedureRequest) {
+		logger.atInfo().log(() -> "#### -> Consumed message -> %s".formatted(procedureRequest));
 		procedureService.nextProcedure(procedureRequest);
 	}
 

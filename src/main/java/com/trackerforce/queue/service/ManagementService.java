@@ -1,6 +1,8 @@
 package com.trackerforce.queue.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.trackerforce.queue.model.GlobalResponse;
+import com.trackerforce.queue.model.ProcedureResponse;
+import com.trackerforce.queue.type.RequestHeader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,21 +12,21 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.trackerforce.queue.model.GlobalResponse;
-import com.trackerforce.queue.model.ProcedureResponse;
-import com.trackerforce.queue.type.RequestHeader;
-
 @Service
 public class ManagementService {
 	
-	private RestTemplate restTemplate = new RestTemplate();
+	private final RestTemplate restTemplate = new RestTemplate();
 
-	@Autowired
-	protected JwtTokenService jwtTokenService;
+	private final JwtTokenService jwtTokenService;
 
-	@Value("${service.management.url}/management/")
-	private String serviceUrl;
-	
+	private final String serviceUrl;
+
+	public ManagementService(JwtTokenService jwtTokenService,
+							 @Value("${service.management.url}/management/") String serviceUrl) {
+		this.jwtTokenService = jwtTokenService;
+		this.serviceUrl = serviceUrl;
+	}
+
 	private HttpHeaders generateHeader(String tenantId) {
 		var token = jwtTokenService.generateToken("trackerforce-queue", tenantId);
 
@@ -44,7 +46,7 @@ public class ManagementService {
 
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
-			throw new ResponseStatusException(e.getRawStatusCode(), e.getMessage(), e);
+			throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
 		}
 	}
 	
@@ -58,7 +60,7 @@ public class ManagementService {
 
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
-			throw new ResponseStatusException(e.getRawStatusCode(), e.getMessage(), e);
+			throw new ResponseStatusException(e.getStatusCode(), e.getMessage(), e);
 		}
 	}
 

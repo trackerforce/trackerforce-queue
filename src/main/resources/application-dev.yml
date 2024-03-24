@@ -8,7 +8,7 @@ service:
       10.0.0.2
     allowed-endpoints: >
       /v3/api-docs,
-      /**/swagger*/**,
+      /*/swagger*/**,
       /queue/session/v1
   management:
     url: http://127.0.0.1:8090  

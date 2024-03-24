@@ -11,7 +11,7 @@ import com.trackerforce.queue.model.ProcedureRequest;
 @Service
 public class MLEngineService {
 
-	private RestTemplate restTemplate = new RestTemplate();
+	private final RestTemplate restTemplate = new RestTemplate();
 
 	public void trainProcedure(String serviceUrl, String tenantId, ProcedureRequest procedureRequest) {
 		restTemplate.exchange(String.format("%s%s%s", serviceUrl, "/train/v1/", tenantId), HttpMethod.POST,
