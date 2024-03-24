@@ -1,25 +1,26 @@
 package com.trackerforce.queue.service;
 
+import com.trackerforce.queue.model.ProcedureRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.trackerforce.queue.model.ProcedureRequest;
-
 @Service
 public class HookService {
 	
 	private final Logger logger = LoggerFactory.getLogger(HookService.class);
 
-	private RestTemplate restTemplate = new RestTemplate();
+	private final RestTemplate restTemplate = new RestTemplate();
 
-	@Autowired
-	protected JwtTokenService jwtTokenService;
+	protected final JwtTokenService jwtTokenService;
+
+	public HookService(JwtTokenService jwtTokenService) {
+		this.jwtTokenService = jwtTokenService;
+	}
 
 	public void executeHook(ProcedureRequest procedureRequest) {
 		var headers = new HttpHeaders();

@@ -1,20 +1,25 @@
 package com.trackerforce.queue.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
+import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+@EnableMethodSecurity
+public class SecurityConfig {
 
 	@Value("${service.endpoint.allowed-addresses}")
 	protected String[] allowedAddresses;
@@ -22,31 +27,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${service.endpoint.allowed-endpoints}")
 	protected String[] allowedEndpoint;
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-				.authorizeRequests()
-				.antMatchers(allowedEndpoint).permitAll()
-				.antMatchers("/**").access(buildAllowedIpList())
-				.anyRequest().authenticated()
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.authorizeHttpRequests(auth ->
+				auth.requestMatchers(allowedEndpoint).permitAll()
+						.anyRequest().access(this::authorize));
 
-				.and()
-				.sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		http.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		http.csrf(AbstractHttpConfigurer::disable);
 
-				.and()
-				.cors()
-
-				.and()
-				.csrf().disable();
+		return http.build();
 	}
 
-	private String buildAllowedIpList() {
-		final String accessIpAddress = Arrays.stream(allowedAddresses)
-				.map(address -> "hasIpAddress('" + address.trim() + "') or ")
-				.collect(Collectors.joining());
+	private AuthorizationDecision authorize(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
+		final var remoteAddress = object.getRequest().getRemoteAddr();
+		var decision = new AuthorizationDecision(authentication.get().isAuthenticated());
 
-		return accessIpAddress.substring(0, accessIpAddress.length() - 4);
+		boolean isAllowed = false;
+		for (String address : allowedAddresses) {
+			IpAddressMatcher ipAddressMatcher = new IpAddressMatcher(address);
+			if (ipAddressMatcher.matches(remoteAddress)) {
+				isAllowed = true;
+				break;
+			}
+		}
+
+		if (!isAllowed) {
+			decision = new AuthorizationDecision(false);
+		}
+
+		return decision;
 	}
 
 }

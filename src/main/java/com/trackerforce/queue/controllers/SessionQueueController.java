@@ -1,7 +1,6 @@
 package com.trackerforce.queue.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,10 +26,10 @@ public class SessionQueueController {
 	}
 
 	@PostMapping(value = "/procedure/submit/{tenantId}/{contextId}")
-	public ResponseEntity<?> enqueueSubmission(HttpServletRequest request,
-			@PathVariable(value = "tenantId") String tenantId,
-			@PathVariable(value = "contextId") String contextId,
-			@RequestBody ProcedureRequest procedureRequest) {
+	public ResponseEntity<ProcedureRequest> enqueueSubmission(HttpServletRequest request,
+											   @PathVariable(value = "tenantId") String tenantId,
+											   @PathVariable(value = "contextId") String contextId,
+											   @RequestBody ProcedureRequest procedureRequest) {
 		procedureRequest.setContextId(contextId);
 		procedureRequest.setTenantId(request.getHeader(RequestHeader.TENANT_HEADER.toString()));
 		
@@ -39,7 +38,7 @@ public class SessionQueueController {
 	}
 	
 	@PostMapping(value = "/procedure/next/{tenantId}/{contextId}")
-	public ResponseEntity<?> enqueueNext(HttpServletRequest request,
+	public ResponseEntity<ProcedureRequest> enqueueNext(HttpServletRequest request,
 			@PathVariable(value = "tenantId") String tenantId,
 			@PathVariable(value = "contextId") String contextId,
 			@RequestBody ProcedureRequest procedureRequest) {
