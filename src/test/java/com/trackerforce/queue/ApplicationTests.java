@@ -1,13 +1,21 @@
 package com.trackerforce.queue;
 
+import com.trackerforce.queue.controllers.SessionQueueController;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
-public class ApplicationTests {
+class ApplicationTests {
+
+	@Autowired
+	SessionQueueController sessionQueueController;
 
 	@Test
-	public void contextLoads() {
+	void contextLoads() {
+		assertNotNull(sessionQueueController);
 	}
 
 }
