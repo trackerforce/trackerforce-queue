@@ -20,29 +20,29 @@ public class OpenAPIConfiguration {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.addServersItem(new Server().url(configProperties.getUrl()))
+				.addServersItem(new Server().url(configProperties.url()))
 				.info(getInfo());
 	}
 
 	private Info getInfo() {
 		return new Info()
-				.title(configProperties.getTitle())
-				.description(configProperties.getDescription())
-				.version(configProperties.getVersion())
+				.title(configProperties.title())
+				.description(configProperties.description())
+				.version(configProperties.version())
 				.contact(getContact())
 				.license(getLicense());
 	}
 
 	private License getLicense() {
 		return new License()
-				.name(configProperties.getLicense().getType())
-				.url(configProperties.getLicense().getUrl());
+				.name(configProperties.license().type())
+				.url(configProperties.license().url());
 	}
 	
 	private Contact getContact() {
 		return new Contact()
-				.name(configProperties.getContact().getAuthor())
-				.email(configProperties.getContact().getEmail());
+				.name(configProperties.contact().author())
+				.email(configProperties.contact().email());
 	}
     
 }

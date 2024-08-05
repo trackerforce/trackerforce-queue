@@ -1,34 +1,42 @@
 package com.trackerforce.queue.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
-
-@Data
-public class ProcedureRequest implements Serializable {
-
+public record ProcedureRequest(
 	@JsonProperty("context_id")
-	private String contextId;
-	
+	String contextId,
 	@JsonProperty("tenant_id")
-	private String tenantId;
-	
-	private String id;
+	String tenantId,
+	String id,
+	String name,
+	String resolution,
+	List<Task> tasks,
+	Hook hook) implements Serializable {
 
-	private String name;
+	public static ProcedureRequest createWithHook(ProcedureRequest procedureRequest, Hook hook) {
+		return new ProcedureRequest(
+				procedureRequest.contextId(),
+				procedureRequest.tenantId(),
+				procedureRequest.id(),
+				procedureRequest.name(),
+				procedureRequest.resolution(),
+				procedureRequest.tasks(),
+				hook);
+	}
 
-	private String resolution;
-
-	private List<Task> tasks;
-	
-	private Hook hook;
-
-	@Override
-	public String toString() {
-		return "ProcedureRequest [contextId=" + contextId + ", tenantId=" + tenantId + ", id=" + id + ", name=" + name
-				+ "]";
+	public static ProcedureRequest createForSubmission(ProcedureRequest procedureRequest,
+													   String contextId, String tenantId) {
+		return new ProcedureRequest(
+				contextId,
+				tenantId,
+				procedureRequest.id(),
+				procedureRequest.name(),
+				procedureRequest.resolution(),
+				procedureRequest.tasks(),
+				procedureRequest.hook());
 	}
 
 }

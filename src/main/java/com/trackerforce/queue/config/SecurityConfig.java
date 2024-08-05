@@ -29,14 +29,10 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests(auth ->
-				auth.requestMatchers(allowedEndpoint).permitAll()
-						.anyRequest().access(this::authorize));
-
-		http.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		http.csrf(AbstractHttpConfigurer::disable);
-
-		return http.build();
+		return http.authorizeHttpRequests(auth -> auth.requestMatchers(allowedEndpoint).permitAll()
+						.anyRequest().access(this::authorize))
+						.sessionManagement(auth -> auth.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+						.csrf(AbstractHttpConfigurer::disable).build();
 	}
 
 	private AuthorizationDecision authorize(Supplier<Authentication> authentication, RequestAuthorizationContext object) {

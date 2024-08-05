@@ -1,18 +1,11 @@
 package com.trackerforce.queue.model;
 
-import lombok.Data;
-
 import java.util.List;
 
-@Data
-public class Task {
-
-	private String id;
-
-	private boolean learn;
-
-	private Object response;
-
-	private List<TaskOption> options;
+public record Task(
+	String id,
+	boolean learn,
+	Object response,
+	List<TaskOption> options) {
 
 }

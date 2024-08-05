@@ -1,21 +1,15 @@
 package com.trackerforce.queue.model;
 
-import java.util.Map;
-
-import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
-@Data
-public class GlobalResponse {
+import java.util.Map;
 
-	private String key;
+public record GlobalResponse(
+		String key,
+		String description,
+		Map<String, Object> attributes) {
 
-	private String description;
-
-	private Map<String, Object> attributes;
-	
 	public String getValue(String attributeKey) {
 		return attributes.containsKey(attributeKey) ? attributes.get(attributeKey).toString() : StringUtils.EMPTY;
 	}
-
 }

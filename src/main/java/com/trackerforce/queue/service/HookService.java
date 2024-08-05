@@ -22,7 +22,7 @@ public class HookService {
 
 	public void executeHook(ProcedureRequest procedureRequest) {
 		var headers = new HttpHeaders();
-		var url = procedureRequest.getHook().getResolverUri();
+		var url = procedureRequest.hook().resolverUri();
 
 		try {
 			restTemplate.exchange(url, HttpMethod.POST, new HttpEntity<>(procedureRequest, headers), Object.class);

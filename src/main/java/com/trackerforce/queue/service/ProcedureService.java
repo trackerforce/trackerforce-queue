@@ -3,10 +3,13 @@ package com.trackerforce.queue.service;
 import static com.github.switcherapi.client.SwitcherContext.getSwitcher;
 import static com.trackerforce.queue.config.Features.ML_SERVICE;
 
+import com.trackerforce.queue.model.Hook;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.trackerforce.queue.model.ProcedureRequest;
+
+import java.util.Objects;
 
 @Service
 public class ProcedureService {
@@ -23,24 +26,28 @@ public class ProcedureService {
 	}
 
 	public void submitProcedure(ProcedureRequest procedureRequest) {
-		var procedureResponse = managementService.findProcedure(procedureRequest.getTenantId(),
-				procedureRequest.getId());
+		var procedureResponse = managementService.findProcedure(
+				procedureRequest.tenantId(),
+				procedureRequest.id());
 
-		if (procedureResponse.getHook() != null) {
-			procedureRequest.setHook(procedureResponse.getHook());
-			hookService.executeHook(procedureRequest);
+		if (Objects.nonNull(procedureResponse.hook()) &&
+				Objects.nonNull(procedureResponse.hook().resolverUri())) {
+			hookService.executeHook(ProcedureRequest.createWithHook(
+					procedureRequest, procedureResponse.hook()));
 		}
 	}
 
 	public void nextProcedure(ProcedureRequest procedureRequest) {
-		if (!getSwitcher(ML_SERVICE).isItOn())
+		if (!getSwitcher(ML_SERVICE).isItOn()) {
 			return;
+		}
 
-		var mlService = managementService.findMLServiceUrl(procedureRequest.getTenantId());
+		var mlService = managementService.findMLServiceUrl(procedureRequest.tenantId());
 		var serviceUrl = mlService.getValue("url");
 
-		if (serviceUrl != null && !StringUtils.isBlank(serviceUrl))
-			mLEngineService.trainProcedure(serviceUrl, procedureRequest.getTenantId(), procedureRequest);
+		if (serviceUrl != null && !StringUtils.isBlank(serviceUrl)) {
+			mLEngineService.trainProcedure(serviceUrl, procedureRequest.tenantId(), procedureRequest);
+		}
 	}
 
 }
