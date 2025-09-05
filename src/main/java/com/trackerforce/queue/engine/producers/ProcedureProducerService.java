@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.github.switcherapi.client.SwitcherContext.getSwitcher;
+import static com.switcherapi.client.SwitcherContext.getSwitcher;
 import static com.trackerforce.queue.config.Features.ASYNC_QUEUE;
 
 @Service

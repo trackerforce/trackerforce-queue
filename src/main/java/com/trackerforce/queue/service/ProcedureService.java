@@ -1,6 +1,6 @@
 package com.trackerforce.queue.service;
 
-import static com.github.switcherapi.client.SwitcherContext.getSwitcher;
+import static com.switcherapi.client.SwitcherContext.getSwitcher;
 import static com.trackerforce.queue.config.Features.ML_SERVICE;
 
 import com.trackerforce.queue.model.Hook;
