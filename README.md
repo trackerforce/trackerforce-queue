@@ -22,9 +22,9 @@
 # Running
 
 **Requirements**
-- Java 11
+- Java 25
 - Kafka
-- Maven 3.8
+- Maven 3.11
 
 * * *
 
