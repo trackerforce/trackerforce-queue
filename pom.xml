@@ -22,7 +22,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.1</version>
+		<version>4.1.0-M2</version>
 		<relativePath/>
 	</parent>
 	
@@ -34,10 +34,10 @@
 		<maven.compiler.target>${java.version}</maven.compiler.target>
 
 		<jsonwebtoken.version>0.13.0</jsonwebtoken.version>
-		<springdoc-openapi-starter-webmvc-ui.version>3.0.0</springdoc-openapi-starter-webmvc-ui.version>
+		<springdoc-openapi-starter-webmvc-ui.version>3.0.1</springdoc-openapi-starter-webmvc-ui.version>
 		<switcher-client.version>2.5.2</switcher-client.version>
 
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
 	</properties>
 	
 	<profiles>
